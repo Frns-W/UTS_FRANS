@@ -1,3 +1,10 @@
+<?php
+include_once("../koneksi.php");
+$idedit = $_GET['id'];
+$qry = "SELECT * FROM biodata WHERE id='$idedit'";
+$edit = mysqli_query($koneksi,$qry);
+$data = mysqli_fetch_array($edit);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,155 +14,83 @@
     <title>Biodata Siswa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../css/all.css">
 </head>
 
-<body style="background-color: #d1e6d4">
+<body style="background-color:#d1e6d4">
     <?php
     include_once("../navbar.php");
     ?>
 
     <div class="container">
         <div class="row my-5">
-            <div class="col-10 m-auto">
+            <div class="col-8 m-auto">
                 <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
                     <div class="card-header">
-                        <b>BIODATA SISWA</b>
-                        <a href="form_tambah.php" class="float-end btn btn-primary btn-sm"><i
-                                class="fa-solid fa-user-plus"></i> Tambah Data</a>
+                        <b>FORM EDIT BIODATA SISWA</b>
                     </div>
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="row">No</th>
-                                    <th scope="col">Judul Buku</th>
-                                    <th scope="col">Pengarang</th>
-                                    <th scope="col">Tahun Terbit</th>
-                                    <th scope="col">Kategori</th>
-                                    <th scope="col">Opsi</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-
-                                <?php
-                                # koneksi
-                                include("../koneksi.php");
-                                # menuliskan query menampilkan data
-                                $qry = "SELECT * FROM uts ";
-                                # menjalankan query
-                                $tampil = mysqli_query($koneksi, $qry);
-                                # looping hasil query
-                                $nomor = 1;
-                                foreach ($tampil as $data) {
-
-                                    ?>
-                                    <tr>
-                                        <th scope="row"><?= $nomor++ ?></th>
-                                        <td><?= $data['judul_buku'] ?></td>
-                                        <td><?= $data['pengarang'] ?></td>
-                                        <td><?= $data['tahun_terbit'] ?></td>
-                                        <td><?= $data['kategori'] ?></td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal<?= $data['id_buku'] ?>">
-                                                <i class="fa-solid fa-magnifying-glass"></i>
-                                            </button>
-
-                                            <button class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#modalEdit">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
-
-                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#modalDelete">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-
-
-
-                                            <div class="modal fade" id="exampleModal<?= $data['id_buku'] ?>" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header bg-warning">
-                                                            <h5 class="modal-title">Detail Data</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <table class="table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>Nama</td>
-                                                                        <th scope="row"><?= $data['judul_buku'] ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Pengarang</td>
-                                                                        <th scope="row"><?= $data['pengarang'] ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Tahun Terbit</td>
-                                                                        <th scope="row"><?= $data['tahun_terbit'] ?></th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Kategori</td>
-                                                                        <th scope="row"><?= $data['kategori'] ?></th>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal fade" id="modalEdit" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <form class="modal-content">
-                                                        <div class="modal-header bg-info">
-                                                            <h5 class="modal-title">Edit Data</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>  
-
-
-
-                                                    </form>
-                                                </div>
-                                            </div>
-
-                                        <div class="modal fade" id="modalhapus<?=$data['id_buku']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Warning</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Yakin Data Buku <?=$data['judul_buku']?> Ingin Dihapus?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <a href="proseshapus.php?id=<?=$data['id_buku']?>" class="btn btn-danger">Hapus</a>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                    <?php
-                                }
-                                ?>
-
-
-                            </tbody>
-                        </table>
+                        <form action="proses_edit.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="<?=$data['id']?>">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Nama Lengkap</label>
+                                <input value="<?=$data['nama']?>" name="nama" type="text" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">NISN</label>
+                                <input value="<?=$data['nisn']?>" name="nisn" type="text" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Tempat Lahir</label>
+                                <input value="<?=$data['tp_lahir']?>" name="tp_lahir" type="text" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Tanggal Lahir</label>
+                                <input value="<?=$data['tg_lahir']?>" name="tg_lahir" type="date" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Alamat</label>
+                                <input value="<?=$data['alamat']?>" name="alamat" type="text" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                                <input value="<?=$data['email']?>" name="email" type="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Jenis Kelamin</label>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jk" <?php echo $data['jk']=='Laki-laki' ? 'checked' : '' ?>
+                                        id="inlineRadio1" value="Laki-laki">
+                                    <label class="form-check-label" for="inlineRadio1">Laki-Laki</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jk" <?php echo $data['jk']=='Perempuan' ? 'checked' : '' ?>
+                                        id="inlineRadio2" value="Perempuan">
+                                    <label class="form-check-label" for="inlineRadio2">Perempuan</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Jurusan</label>
+                                <select class="form-control" name="jur" id="">
+                                    <option value="">-Pilih Jurusan-</option>
+                                    <option <?php echo $data['jur']=='IPA' ? 'selected' : '' ?> value="IPA">IPA</option>
+                                    <option <?php echo $data['jur']=='IPS' ? 'selected' : '' ?> value="IPS">IPS</option>
+                                    <option <?php echo $data['jur']=='Bahasa' ? 'selected' : '' ?> value="Bahasa">Bahasa</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Foto</label>
+                                <input name="foto" type="file" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -166,8 +101,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-
-    <script src="../js/all.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,21 @@
 <?php 
     
 include_once("../koneksi.php");
-$idedit = $_GET['id_buku'];
-$query = "SELECT * FROM uts WHERE id='$idedit'";
-$edit = mysqli_query($koneksi,$query);
+
+$idedit = isset($_GET['id_buku']) ? $_GET['id_buku'] : '';
+if (empty($idedit)) {
+    header("Location: ../index.php");
+    exit;
+}
+
+// ambil data baris berdasarkan id_buku (simple string-based query)
+$query = "SELECT * FROM uts WHERE id_buku = '$idedit'";
+$edit = mysqli_query($koneksi, $query);
 $data = mysqli_fetch_array($edit);
+if (!$data) {
+    header("Location: ../index.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,35 +40,31 @@ $data = mysqli_fetch_array($edit);
                     <div class="card-header">
                         <b>FORM EDIT LIST BUKU</b>
                     </div>
-                    <form action="proses_edit.php" method="POST" enctype="multipart/form-data">
                     <div class="card-body">
-                        <form action="proses_tambah.php" method="POST" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id buku</label>
-                                <input value ="<?=$data ['id_buku']?>"name="nama" type="text" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                            </div>
+                        <form action="proses_edit.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="id_buku" value="<?= $idedit ?>">
+                        
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Judul buku</label>
-                                <input value ="<?=$data ['judul_buku']?>"name="nisn" type="text" class="form-control" id="exampleInputEmail1"
+                                <input value ="<?=$data ['judul_buku']?>"name="judul_buku" type="text" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Pengarang</label>
-                                <input value ="<?=$data ['pengarang']?>"name="tmpt_lahir" type="text" class="form-control" id="exampleInputEmail1"
+                                <input value ="<?=$data ['pengarang']?>"name="pengarang" type="text" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tahun Terbit</label>
-                                <input value ="<?=$data ['tahun_terbit']?>" name="tgl_lahir" type="date" class="form-control" id="exampleInputEmail1"
+                                <input value ="<?=$data ['tahun_terbit']?>" name="tahun_terbit" type="date" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Kategori</label>
-                                <input value ="<?=$data ['kategori']?>" name="alamat" type="text" class="form-control" id="exampleInputEmail1"
+                                <input value ="<?=$data ['kategori']?>" name="kategori" type="text" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </form>
                     </div>
                 </div>

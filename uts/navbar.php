@@ -10,13 +10,11 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page"
                         href="http://localhost//UTS_FRANS/uts/proses/form_tambah.php">Tambah</a>
+                        
                 </li>
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            
         </div>
-    </div>
+    </div> 
 </nav>
